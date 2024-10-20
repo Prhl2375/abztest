@@ -18,7 +18,15 @@ class ResourceController extends Controller
     {
         $count = $request->input('count', 6);
 
-        $users = UserApi::orderBy('updated_at', 'desc')->orderBy('name', 'asc')->paginate($count);
+        $users = UserApi::orderBy('updated_at', 'desc')
+            ->orderBy('name', 'asc')
+            ->paginate($count)
+            ->map(function ($user) {
+                // Assuming your image path is stored in a field called 'image_path'
+                $user->image_path = asset($user->image_path);
+                return $user;
+            });
+
         if(!$users){
             return response()->json([
                 'success' => false,
