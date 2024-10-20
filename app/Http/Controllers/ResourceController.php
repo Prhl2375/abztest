@@ -18,7 +18,10 @@ class ResourceController extends Controller
     {
         $count = $request->input('count', 6);
 
-        $users = UserApi::orderBy('updated_at', 'desc')->orderBy('name', 'asc')->paginate($count);
+        $users = UserApi::orderBy('updated_at', 'desc')
+            ->orderBy('name', 'asc')
+            ->paginate($count);
+
         if(!$users){
             return response()->json([
                 'success' => false,
@@ -36,7 +39,10 @@ class ResourceController extends Controller
                 'next_url' => $users->nextPageUrl(),
                 'prev_url' => $users->previousPageUrl(),
             ],
-            'users' => $users->items(),
+            'users' => $users->map(function ($user) {
+                $user->photo = asset($user->photo);
+                return $user;
+            }),
         ];
 
         return response()->json($response);
