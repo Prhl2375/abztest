@@ -27,11 +27,7 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $imageOptimization = new TinifyImageOptimization();
-        $photo = file_get_contents('https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg');
-        $photoName = 'default_profile_picture.jpg';
-        $imageOptimization->profilePictureOptimizationAction($photo, public_path('images/') . $photoName);
-        $photoPath = 'images/' . $photoName;
+        $photoPath = 'images/default_profile_picture.jpg';
         $faker = \Faker\Factory::create('uk_UA');
         return [
             'name' => fake()->name(),
